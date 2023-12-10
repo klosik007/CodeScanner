@@ -56,6 +56,7 @@ val compose_bom_version = "2023.03.00"
 val junit_version = "4.13.2"
 val junit_test_ext_version = "1.1.5"
 val espresso_core_version = "3.5.1"
+val retrofit_version = "2.8.1"
 
 dependencies {
 
@@ -76,6 +77,9 @@ dependencies {
     implementation("androidx.camera:camera-view:${camerax_version}")
     implementation("androidx.camera:camera-mlkit-vision:${camerax_version}")
     implementation("androidx.camera:camera-extensions:${camerax_version}")
+    
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 
     testImplementation("junit:junit:$junit_version")
     androidTestImplementation("androidx.test.ext:junit:$junit_test_ext_version")
