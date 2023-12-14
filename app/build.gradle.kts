@@ -58,7 +58,7 @@ val junit_version = "4.13.2"
 val junit_test_ext_version = "1.1.5"
 val espresso_core_version = "3.5.1"
 val retrofit_version = "2.8.1"
-val accompanist_version = "0.32"
+val accompanist_version = "0.33.2-alpha"
 
 dependencies {
 
