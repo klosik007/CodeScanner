@@ -50,6 +50,7 @@ android {
         }
     }
 }
+
 val compose_ui_version = "1.8.1"
 val camerax_version = "1.4.0-alpha02"
 val compose_bom_version = "2023.03.00"
@@ -57,6 +58,7 @@ val junit_version = "4.13.2"
 val junit_test_ext_version = "1.1.5"
 val espresso_core_version = "3.5.1"
 val retrofit_version = "2.8.1"
+val accompanist_version = "0.32"
 
 dependencies {
 
@@ -77,7 +79,9 @@ dependencies {
     implementation("androidx.camera:camera-view:${camerax_version}")
     implementation("androidx.camera:camera-mlkit-vision:${camerax_version}")
     implementation("androidx.camera:camera-extensions:${camerax_version}")
-    
+
+    implementation("com.google.accompanist:accompanist-permissions:$accompanist_version")
+
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 
