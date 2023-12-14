@@ -18,8 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import android.Manifest
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.text.style.TextAlign
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -81,6 +86,16 @@ fun CameraPreviewScreen() {
             onRelease = {
                 cameraController.unbind()
             }
+        )
+    }
+
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = "Barcode value here",
+            textAlign = TextAlign.Center,
+            color = Color.White
         )
     }
 }
