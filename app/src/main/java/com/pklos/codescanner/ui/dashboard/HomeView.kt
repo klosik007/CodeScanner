@@ -30,15 +30,11 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-
-@Composable
-fun Home() {
-    CameraPermission()
-}
+import com.pklos.codescanner.camera.CameraAssistant
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraPermission() {
+fun Home(cameraAssistant: CameraAssistant) {
     val cameraPermissionsState = rememberPermissionState(Manifest.permission.CAMERA)
     LaunchedEffect(key1 = Unit) {
         if (!cameraPermissionsState.status.isGranted && !cameraPermissionsState.status.shouldShowRationale) {
@@ -47,7 +43,7 @@ fun CameraPermission() {
     }
 
     if (cameraPermissionsState.status.isGranted) {
-        CameraPreviewScreen()
+        CameraPreviewScreen(cameraAssistant)
     } else {
         NoCameraPermissionScreen(cameraPermissionState = cameraPermissionsState)
     }
@@ -61,7 +57,7 @@ fun NoCameraPermissionScreen(cameraPermissionState: PermissionState) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun CameraPreviewScreen() {
+fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
     val ctx = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraController = remember { LifecycleCameraController(ctx) }
@@ -80,6 +76,7 @@ fun CameraPreviewScreen() {
                 }.also { previewView ->
                     previewView.controller = cameraController
                     cameraController.bindToLifecycle(lifecycleOwner)
+                    cameraAssistant.start(previewView)
                 }
             },
             onReset = {},
