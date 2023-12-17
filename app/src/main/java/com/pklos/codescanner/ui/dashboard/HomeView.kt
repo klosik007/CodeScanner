@@ -18,19 +18,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import android.Manifest
+import androidx.activity.ComponentActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.style.TextAlign
+import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.pklos.codescanner.camera.CameraAssistant
+import com.pklos.codescanner.ml.BarcodeScanner
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -59,8 +72,8 @@ fun NoCameraPermissionScreen(cameraPermissionState: PermissionState) {
 @Composable
 fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
     val ctx = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val cameraController = remember { LifecycleCameraController(ctx) }
+    var barcodeText by remember { mutableStateOf( "Barcode value here") }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { padding: PaddingValues ->
         AndroidView(
@@ -68,16 +81,47 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
                 .fillMaxSize()
                 .padding(padding),
             factory = { ctx ->
-                PreviewView(ctx).apply {
+                val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+                val previewView = PreviewView(ctx).apply {
                     setBackgroundColor(Color.White.toArgb())
                     layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
                     scaleType = PreviewView.ScaleType.FILL_START
                     implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-                }.also { previewView ->
-                    previewView.controller = cameraController
-                    cameraController.bindToLifecycle(lifecycleOwner)
-                    cameraAssistant.start(previewView)
                 }
+
+                val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
+                cameraProviderFuture.addListener({
+                    val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                    val preview = Preview.Builder()
+                        .build()
+                        .also {
+                            it.setSurfaceProvider(previewView.surfaceProvider)
+                        }
+                    val imageCapture = ImageCapture.Builder().build()
+
+                    val imageAnalyzer = ImageAnalysis.Builder()
+                        .build()
+                        .also {
+                            it.setAnalyzer(cameraExecutor, BarcodeScanner { barcodeText = "Barcode Found" })
+                        }
+
+                    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+                    try {
+                        cameraProvider.unbindAll()
+                        cameraProvider.bindToLifecycle(
+                            ctx as ComponentActivity,
+                            cameraSelector,
+                            preview,
+                            imageCapture,
+                            imageAnalyzer)
+                    } catch(e: Exception) {
+                        println("Exception: camera bind to lifecycle failed")
+                    }
+
+                }, ContextCompat.getMainExecutor(ctx))
+
+                previewView
             },
             onReset = {},
             onRelease = {
@@ -90,7 +134,7 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
         Text(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = "Barcode value here",
+            text = barcodeText,
             textAlign = TextAlign.Center,
             color = Color.White
         )

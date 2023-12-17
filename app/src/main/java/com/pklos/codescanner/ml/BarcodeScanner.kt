@@ -9,22 +9,20 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 
-class BarcodeScanner: ImageAnalysis.Analyzer {
-    val options = BarcodeScannerOptions.Builder()
-        .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
-        .build()
-
+class BarcodeScanner(val callback: () -> Unit): ImageAnalysis.Analyzer {
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(image: ImageProxy) {
-        image.image?.let {
+        val mediaImage = image.image
+        mediaImage?.let {
             val img = InputImage.fromMediaImage(it, image.imageInfo.rotationDegrees)
             val scanner = BarcodeScanning.getClient(options)
 
             scanner.process(img)
                 .addOnSuccessListener { barcodes ->
-                    barcodes.forEach { barcode ->
-                        barcode.displayValue
+                    if (barcodes.size > 0) {
+                        callback()
                     }
+
                     image.close()
                 }
                 .addOnFailureListener {
@@ -32,4 +30,8 @@ class BarcodeScanner: ImageAnalysis.Analyzer {
                 }
         }
     }
+
+    private val options = BarcodeScannerOptions.Builder()
+        .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+        .build()
 }
