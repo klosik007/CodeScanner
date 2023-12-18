@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import android.Manifest
 import androidx.activity.ComponentActivity
@@ -24,8 +23,12 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +36,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -128,6 +135,24 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
                 cameraController.unbind()
             }
         )
+    }
+
+    Row(verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center)
+    {
+        val boxWidth = (LocalConfiguration.current.screenWidthDp / 1.5).dp
+        val boxHeight = (LocalConfiguration.current.screenHeightDp / 6).dp
+
+        Canvas(modifier = Modifier
+                .size(width = boxWidth, height = boxHeight)
+                .border(width = 1.dp, color = Color.Magenta)
+        ) {
+            drawRect(
+                color = Color.White,
+                topLeft = Offset.Zero,
+                style = Stroke()
+            )
+        }
     }
 
     Row(verticalAlignment = Alignment.Bottom) {
