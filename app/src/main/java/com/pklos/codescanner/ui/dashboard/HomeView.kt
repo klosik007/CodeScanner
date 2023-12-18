@@ -36,6 +36,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
@@ -145,12 +146,12 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
 
         Canvas(modifier = Modifier
                 .size(width = boxWidth, height = boxHeight)
-                .border(width = 1.dp, color = Color.Magenta)
         ) {
-            drawRect(
-                color = Color.White,
+            drawRoundRect(
+                color = Color.Magenta,
                 topLeft = Offset.Zero,
-                style = Stroke()
+                style = Stroke(),
+                cornerRadius = CornerRadius(10.dp.toPx())
             )
         }
     }
