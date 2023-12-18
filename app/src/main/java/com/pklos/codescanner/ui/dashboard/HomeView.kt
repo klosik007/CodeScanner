@@ -56,7 +56,7 @@ import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun Home(cameraAssistant: CameraAssistant) {
+fun Home() {
     val cameraPermissionsState = rememberPermissionState(Manifest.permission.CAMERA)
     LaunchedEffect(key1 = Unit) {
         if (!cameraPermissionsState.status.isGranted && !cameraPermissionsState.status.shouldShowRationale) {
@@ -65,7 +65,7 @@ fun Home(cameraAssistant: CameraAssistant) {
     }
 
     if (cameraPermissionsState.status.isGranted) {
-        CameraPreviewScreen(cameraAssistant)
+        CameraPreviewScreen()
     } else {
         NoCameraPermissionScreen(cameraPermissionState = cameraPermissionsState)
     }
@@ -79,7 +79,7 @@ fun NoCameraPermissionScreen(cameraPermissionState: PermissionState) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
+fun CameraPreviewScreen() {
     val ctx = LocalContext.current
     val cameraController = remember { LifecycleCameraController(ctx) }
     var barcodeText by remember { mutableStateOf( "Barcode value here") }

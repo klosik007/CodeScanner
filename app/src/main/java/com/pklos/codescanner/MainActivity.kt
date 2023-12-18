@@ -16,7 +16,6 @@ import com.pklos.codescanner.ui.theme.CodeScannerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cameraAssistant = CameraAssistant()
 
         setContent {
             CodeScannerTheme {
@@ -25,11 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Home(cameraAssistant)
+                    Home()
                 }
             }
         }
     }
-
-    private lateinit var cameraAssistant: CameraAssistant
 }
