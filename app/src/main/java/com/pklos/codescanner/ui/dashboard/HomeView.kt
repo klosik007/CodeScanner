@@ -141,15 +141,7 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
 
     BarcodeBox()
 
-    Row(verticalAlignment = Alignment.Bottom) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = barcodeText,
-            textAlign = TextAlign.Center,
-            color = Color.White
-        )
-    }
+    BarcodeText(barcodeText)
 }
 
 @Composable
@@ -175,6 +167,19 @@ fun BarcodeBox() {
                 cornerRadius = CornerRadius(10.dp.toPx())
             )
         }
+    }
+}
+
+@Composable
+fun BarcodeText(barcodeText: String) {
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = barcodeText,
+            textAlign = TextAlign.Center,
+            color = Color.White
+        )
     }
 }
 
