@@ -24,11 +24,12 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -138,23 +139,7 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
         )
     }
 
-    Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center)
-    {
-        val boxWidth = (LocalConfiguration.current.screenWidthDp / 1.5).dp
-        val boxHeight = (LocalConfiguration.current.screenHeightDp / 6).dp
-
-        Canvas(modifier = Modifier
-                .size(width = boxWidth, height = boxHeight)
-        ) {
-            drawRoundRect(
-                color = Color.Magenta,
-                topLeft = Offset.Zero,
-                style = Stroke(),
-                cornerRadius = CornerRadius(10.dp.toPx())
-            )
-        }
-    }
+    BarcodeBox()
 
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
@@ -164,6 +149,40 @@ fun CameraPreviewScreen(cameraAssistant: CameraAssistant) {
             textAlign = TextAlign.Center,
             color = Color.White
         )
+    }
+}
+
+@Composable
+fun BarcodeBox() {
+    val boxWidth = (LocalConfiguration.current.screenWidthDp / 1.5).dp
+    val boxHeight = (LocalConfiguration.current.screenHeightDp / 6).dp
+
+    Column(verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally)
+    {
+        Text(text = "Place barcode in the box",
+             textAlign = TextAlign.Center,
+             color = Color.White
+        )
+
+        Canvas(modifier = Modifier
+            .size(width = boxWidth, height = boxHeight)
+        ) {
+            drawRoundRect(
+                color = Color.Magenta,
+                topLeft = Offset.Zero,
+                style = Stroke(),
+                cornerRadius = CornerRadius(10.dp.toPx())
+            )
+        }
+    }
+}
+
+@androidx.compose.ui.tooling.preview.Preview
+@Composable
+private fun BarcodeBoxPreview() {
+    Surface(color = Color.Black) {
+        BarcodeBox()
     }
 }
 
