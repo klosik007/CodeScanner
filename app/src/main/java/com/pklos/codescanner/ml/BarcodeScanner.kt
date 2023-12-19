@@ -19,9 +19,8 @@ class BarcodeScanner(val callback: () -> Unit): ImageAnalysis.Analyzer {
 
             scanner.process(img)
                 .addOnSuccessListener { barcodes ->
-                    if (barcodes.size > 0) {
-                        callback()
-                    }
+                    changeBarcodeText = barcodes.size > 0
+                    callback()
 
                     image.close()
                 }
@@ -38,4 +37,8 @@ class BarcodeScanner(val callback: () -> Unit): ImageAnalysis.Analyzer {
             Barcode.FORMAT_EAN_13, Barcode.FORMAT_EAN_8, Barcode.FORMAT_ITF, Barcode.FORMAT_PDF417,
             Barcode.FORMAT_UPC_A, Barcode.FORMAT_UPC_E)
         .build()
+
+    companion object {
+        var changeBarcodeText = false
+    }
 }

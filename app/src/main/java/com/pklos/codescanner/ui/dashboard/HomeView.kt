@@ -107,11 +107,15 @@ fun CameraPreviewScreen() {
                             it.setSurfaceProvider(previewView.surfaceProvider)
                         }
                     val imageCapture = ImageCapture.Builder().build()
-
                     val imageAnalyzer = ImageAnalysis.Builder()
                         .build()
                         .also {
-                            it.setAnalyzer(cameraExecutor, BarcodeScanner { barcodeText = "Barcode Found" })
+                            it.setAnalyzer(cameraExecutor, BarcodeScanner {
+                                barcodeText = if(BarcodeScanner.changeBarcodeText)
+                                    "Barcode Found"
+                                else
+                                    "Barcode value here"
+                            })
                         }
 
                     val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
