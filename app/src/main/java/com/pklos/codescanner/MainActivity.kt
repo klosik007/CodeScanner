@@ -3,13 +3,10 @@ package com.pklos.codescanner
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.camera.mlkit.vision.MlKitAnalyzer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
-import com.pklos.codescanner.camera.CameraAssistant
 import com.pklos.codescanner.ui.dashboard.Home
 import com.pklos.codescanner.ui.theme.CodeScannerTheme
 

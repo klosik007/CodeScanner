@@ -40,7 +40,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -49,8 +48,8 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.pklos.codescanner.camera.CameraAssistant
 import com.pklos.codescanner.ml.BarcodeScanner
+import com.pklos.codescanner.utils.Screen
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -150,8 +149,8 @@ fun CameraPreviewScreen() {
 
 @Composable
 fun BarcodeBox() {
-    val boxWidth = (LocalConfiguration.current.screenWidthDp / 1.5).dp
-    val boxHeight = (LocalConfiguration.current.screenHeightDp / 6).dp
+    val boxWidth = (Screen.width / 3).dp
+    val boxHeight = (Screen.height / 12).dp
 
     Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally)
