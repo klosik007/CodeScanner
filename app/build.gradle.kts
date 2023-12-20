@@ -51,8 +51,8 @@ android {
     }
 }
 
-val compose_ui_version = "1.8.1"
-val camerax_version = "1.4.0-alpha02"
+val compose_ui_version = "1.8.2"
+val camerax_version = "1.4.0-alpha03"
 val compose_bom_version = "2023.03.00"
 val junit_version = "4.13.2"
 val junit_test_ext_version = "1.1.5"
