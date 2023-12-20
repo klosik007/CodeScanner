@@ -14,12 +14,16 @@ class BarcodeScanner(val callback: () -> Unit): ImageAnalysis.Analyzer {
     override fun analyze(image: ImageProxy) {
         val mediaImage = image.image
         mediaImage?.let {
-            val img = InputImage.fromMediaImage(it, image.imageInfo.rotationDegrees)
-            val scanner = BarcodeScanning.getClient(options)
+            // TODO: crop image from barcode box and send to scanner
 
-            scanner.process(img)
+            val mediaImg = InputImage.fromMediaImage(it, image.imageInfo.rotationDegrees)
+            val scanner = BarcodeScanning.getClient(options)
+            scanner.process(mediaImg)
                 .addOnSuccessListener { barcodes ->
                     changeBarcodeText = barcodes.size > 0
+                    for (barcode in barcodes) {
+                        barcodeValue = barcode.rawValue
+                    }
                     callback()
 
                     image.close()
@@ -40,5 +44,6 @@ class BarcodeScanner(val callback: () -> Unit): ImageAnalysis.Analyzer {
 
     companion object {
         var changeBarcodeText = false
+        var barcodeValue: String? = ""
     }
 }

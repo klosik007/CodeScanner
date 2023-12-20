@@ -111,7 +111,7 @@ fun CameraPreviewScreen() {
                         .also {
                             it.setAnalyzer(cameraExecutor, BarcodeScanner {
                                 barcodeText = if(BarcodeScanner.changeBarcodeText)
-                                    "Barcode Found"
+                                    BarcodeScanner.barcodeValue ?: "Something's wrong with barcode"
                                 else
                                     "Barcode value here"
                             })
